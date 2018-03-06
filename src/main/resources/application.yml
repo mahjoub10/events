@@ -1,0 +1,56 @@
+
+# ===================================================================
+# Spring Boot configuration for the "dev" profile.
+#
+# This configuration overrides the application-dev.yml file.
+# ===================================================================
+server:
+  port: 7080
+
+
+spring:
+    datasource:
+        initialize: false
+        driver-class-name: org.h2.Driver
+        url: jdbc:h2:mem:AZ;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+        name: userDB
+        username: sa
+        password:
+        test-while-idle: true
+        validationQuery: SELECT 1
+    jpa:
+        database-platform: org.hibernate.dialect.H2Dialect
+        database: MYSQL
+        show_sql: false
+        properties:
+            hibernate.cache.use_second_level_cache: false
+            hibernate.cache.use_query_cache: false
+            hibernate.generate_statistics: false
+            hibernate.event.merge.entity_copy_observer: allow
+            hibernate.format_sql: false
+            hibernate.use_sql_comments: false
+        hibernate:
+          ddl-auto: none
+
+
+
+flyway:
+  baseline-on-migrate: true
+  validate-on-migrate: false
+  locations:
+    - db/migration
+  enabled: true
+
+
+
+core:
+  swagger:
+    title: Code once  talents application
+    description: Code once Talents Core
+    version: 0.1.0
+    termsOfServiceUrl:
+    contactName:
+    contactUrl:
+    contactEmail:
+    license:
+    licenseUrl:
