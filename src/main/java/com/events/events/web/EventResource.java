@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * Event controller that groups the WS endpoints.
+ */
 @RequestMapping("/api/events")
 @RestController
 public class EventResource {
@@ -19,12 +22,22 @@ public class EventResource {
     @Autowired
     private EventService eventService ;
 
+    /**
+     * Create new event.
+     *
+     * @param event
+     */
     @PostMapping("/create")
     public  void createEvent(@RequestBody EventDto event) {
         logger.info("Request to save new Event : {}",event);
         this.eventService.createEvent(event);
     }
 
+    /**
+     * Get back the list of all available events.
+     *
+     * @return
+     */
     @GetMapping("/all")
     public ResponseEntity<List<EventDto>> getAllEvents() {
 

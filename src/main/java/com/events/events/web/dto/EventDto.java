@@ -2,6 +2,9 @@ package com.events.events.web.dto;
 
 import java.util.Date;
 
+/**
+ * Event dto representation.
+ */
 public class EventDto {
 
     private String name;

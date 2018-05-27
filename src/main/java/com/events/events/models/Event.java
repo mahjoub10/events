@@ -1,11 +1,13 @@
 package com.events.events.models;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
+/**
+ * Event entity.
+ */
 @Entity
 public class Event {
 
@@ -21,7 +23,18 @@ public class Event {
 
     private String subject ;
 
-    private String speaker;
+
+    @ManyToMany()
+    @JoinTable(name = "events_attendees",
+      joinColumns = {@JoinColumn(name = "event_id", referencedColumnName = "id")},
+      inverseJoinColumns = {@JoinColumn(name = "attendee_id", referencedColumnName = "id")})
+    private Set<Attendee> attendees = new HashSet<>();
+
+    @ManyToMany()
+    @JoinTable(name = "events_speakers",
+            joinColumns = {@JoinColumn(name = "event_id", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "speaker_id", referencedColumnName = "id")})
+    private Set<Speaker> speakers = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -63,11 +76,19 @@ public class Event {
         this.subject = subject;
     }
 
-    public String getSpeaker() {
-        return speaker;
+    public Set<Attendee> getAttendees() {
+        return attendees;
     }
 
-    public void setSpeaker(String speaker) {
-        this.speaker = speaker;
+    public void setAttendees(Set<Attendee> attendees) {
+        this.attendees = attendees;
+    }
+
+    public Set<Speaker> getSpeakers() {
+        return speakers;
+    }
+
+    public void setSpeakers(Set<Speaker> speakers) {
+        this.speakers = speakers;
     }
 }

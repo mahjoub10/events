@@ -12,6 +12,9 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Event operations.
+ */
 @Service
 public class EventService {
 
@@ -31,7 +34,7 @@ public class EventService {
 
         logger.info("Save new event");
         Event eventToSave = eventMapper.eventDtoToEvent(event);
-        eventRepository.save(eventToSave);
+        this.saveEvent(eventToSave);
 
     }
 
@@ -47,4 +50,26 @@ public class EventService {
                 .map(eventMapper::eventToEventDto)
                 .collect(Collectors.toList());
     }
+
+    /**
+     * Find event by id.
+     * @param id
+     * @return
+     */
+    public Event getEventById(Long id) {
+        return eventRepository.findOneById(id)
+                .orElseThrow(() -> new IllegalArgumentException(String.format("No event has been found using id : %", id)));
+    }
+
+    /**
+     * Save changes .
+     *
+     * @param event
+     */
+    public  void saveEvent(Event event) {
+
+        this.eventRepository.save(event);
+    }
+
+
 }
