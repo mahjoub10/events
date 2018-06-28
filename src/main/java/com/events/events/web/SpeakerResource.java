@@ -5,6 +5,7 @@ import com.events.events.web.dto.SpeakerDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -16,17 +17,19 @@ public class SpeakerResource {
     @Autowired
     private SpeakerService speakerService;
 
+
     /**
      * Create new speaker.
      *
      * @param speakerDto
      */
     @PostMapping("/create")
-    public  void createSpeaker(@RequestBody SpeakerDto speakerDto) {
+    public ResponseEntity<SpeakerDto> createSpeaker(@RequestBody SpeakerDto speakerDto) {
 
         logger.info("WS call to create new speaker");
 
-        this.speakerService.createSpeaker(speakerDto);
+        SpeakerDto result = this.speakerService.createSpeaker(speakerDto);
+        return  ResponseEntity.ok(result);
     }
 
     /**

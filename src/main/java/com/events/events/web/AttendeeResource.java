@@ -2,9 +2,11 @@ package com.events.events.web;
 
 import com.events.events.services.AttendeeService;
 import com.events.events.web.dto.AttendeeDto;
+import com.events.events.web.dto.EventDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/api/attendee")
@@ -22,10 +24,11 @@ public class AttendeeResource {
      * @param attendeeDto
      */
     @PostMapping("/subscribe")
-    public void createAttendee(@RequestBody AttendeeDto attendeeDto) {
+    public ResponseEntity<AttendeeDto> createAttendee(@RequestBody AttendeeDto attendeeDto) {
 
         logger.info("WS call to add new attendee");
-        this.attendeeService.createNewAttendee(attendeeDto);
+        AttendeeDto result = this.attendeeService.createNewAttendee(attendeeDto);
+        return  ResponseEntity.ok(result);
     }
 
     /**
@@ -54,20 +57,28 @@ public class AttendeeResource {
     /**
      * Subscribe to event.
      *
-     * @param idAttendee
      * @param idEvent
      */
     @GetMapping("/event/subscribe")
-    public  void subscribeToEvent(@RequestParam("idAttendee") long idAttendee, @RequestParam("idEvent") long idEvent) {
+    public  ResponseEntity<EventDto>  subscribeToEvent(@RequestParam("idEvent") long idEvent) {
 
-        logger.info("sWS call to subscribe attendee : {} to event : {}", idAttendee, idEvent);
-        this.attendeeService.subscribeToEvents(idAttendee, idEvent);
+        logger.info("WS call to subscribe attendee  to event : {}", idEvent);
+        EventDto result = this.attendeeService.subscribeToEvents(idEvent);
+
+        return  ResponseEntity.ok(result);
     }
 
+    /**
+     *
+     * @param idEvent
+     * @return
+     */
+    @GetMapping("/event/unSubscribe")
+    public  ResponseEntity<EventDto>  unsubscribeFromEvent( @RequestParam("idEvent") long idEvent) {
 
-    public  void unsubscribeFromEvent(@RequestParam("idAttendee") Long idAttendee, @RequestParam("idEvent") long idEvent) {
+        logger.info("WS call to unsubscribe  attendee :  from  event : {}", idEvent);
+        EventDto result = this.attendeeService.unsubscribeFromEvent(idEvent);
 
-        logger.info("sWS call to unsubscribe  attendee : {} from  event : {}", idAttendee, idEvent);
-        this.attendeeService.unsubscribeFromEvent(idAttendee, idEvent);
+        return  ResponseEntity.ok(result);
     }
 }

@@ -28,9 +28,10 @@ public class EventResource {
      * @param event
      */
     @PostMapping("/create")
-    public  void createEvent(@RequestBody EventDto event) {
+    public  ResponseEntity<EventDto> createEvent(@RequestBody EventDto event) {
         logger.info("Request to save new Event : {}",event);
-        this.eventService.createEvent(event);
+        EventDto result = this.eventService.createEvent(event);
+        return  ResponseEntity.ok(result);
     }
 
     /**
@@ -41,9 +42,18 @@ public class EventResource {
     @GetMapping("/all")
     public ResponseEntity<List<EventDto>> getAllEvents() {
 
-        logger.info("Request to get alla event");
+        logger.info("Request to get all event");
         List<EventDto> result = this.eventService.getAllEvent();
         return  ResponseEntity.ok(result);
 
+    }
+
+    @GetMapping("/get")
+    public  ResponseEntity<EventDto> getEventDetail(@RequestParam("eventId") long eventId) {
+
+        logger.info("Request to get event detail : '{}' ", eventId );
+
+        EventDto result = eventService.findEventById(eventId) ;
+        return  ResponseEntity.ok(result);
     }
 }

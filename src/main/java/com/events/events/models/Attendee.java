@@ -10,7 +10,7 @@ import java.util.Set;
  */
 @Entity
 @DiscriminatorValue("attendee")
-public class Attendee {
+public class Attendee  extends  User{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,9 +20,8 @@ public class Attendee {
 
     private String lastName ;
 
-    private boolean activated = true;// the attendee is activated by default
 
-    private boolean deleted;
+
 
     @ManyToMany(mappedBy = "attendees")
     private Set<Event> events = new HashSet<>();
@@ -50,22 +49,6 @@ public class Attendee {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
-    }
-
-    public boolean isActivated() {
-        return activated;
-    }
-
-    public void setActivated(boolean activated) {
-        this.activated = activated;
-    }
-
-    public boolean isDeleted() {
-        return deleted;
-    }
-
-    public void setDeleted(boolean deleted) {
-        this.deleted = deleted;
     }
 
     public Set<Event> getEvents() {

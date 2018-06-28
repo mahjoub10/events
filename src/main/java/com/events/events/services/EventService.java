@@ -2,7 +2,9 @@ package com.events.events.services;
 
 import com.events.events.mapper.EventMapper;
 import com.events.events.models.Event;
+import com.events.events.models.Speaker;
 import com.events.events.repositories.EventRepository;
+import com.events.events.repositories.SpeakerRepository;
 import com.events.events.web.dto.EventDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -26,33 +30,62 @@ public class EventService {
     @Autowired
     private EventRepository eventRepository;
 
+    @Autowired
+    private SpeakerRepository speakerRepository;
+
     /**
      * Create new Event.
+     *
      * @param event
      */
-    public void createEvent(EventDto event) {
+    public EventDto createEvent(EventDto event) {
 
         logger.info("Save new event");
         Event eventToSave = eventMapper.eventDtoToEvent(event);
-        this.saveEvent(eventToSave);
+        Set<Speaker> speakers = event
+                .getSpeakerIds()
+                .stream()
+                .map(id -> speakerRepository.findOneById(id))
+                .map(Optional::get)
+                .collect(Collectors.toSet());
+
+        eventToSave.setSpeakers(speakers);
+        Event savedEvent = this.saveEvent(eventToSave);
+
+        return  eventMapper.eventToEventDto(savedEvent);
 
     }
 
 
     /**
      * Get event list
+     *
      * @return
      */
     public List<EventDto> getAllEvent() {
 
-        return eventRepository.findAll()
+        return eventRepository.findEventByDate()
                 .stream()/**/
                 .map(eventMapper::eventToEventDto)
                 .collect(Collectors.toList());
     }
 
+
     /**
      * Find event by id.
+     *
+     * @param id
+     * @return
+     */
+    public EventDto findEventById(Long id) {
+
+        Event event =  this.getEventById(id);
+        return eventMapper.eventToEventDto(event);
+    }
+
+    /**
+     * Find event by id.
+     *
      * @param id
      * @return
      */
@@ -66,9 +99,9 @@ public class EventService {
      *
      * @param event
      */
-    public  void saveEvent(Event event) {
+    public Event saveEvent(Event event) {
 
-        this.eventRepository.save(event);
+       return this.eventRepository.save(event);
     }
 
 

@@ -1,21 +1,28 @@
 package com.events.events.web.dto;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Event dto representation.
  */
 public class EventDto {
 
+    private long id;
+
     private String name;
 
     private Date start;
 
-    private String address;
+    private String subject;
 
-    private String subject ;
+    private List<Long> speakerIds;
 
-    private String speaker;
+    private String description;
+
+    private Set<AttendeeDto> attendees = new HashSet<>();
 
 
     public String getName() {
@@ -34,12 +41,13 @@ public class EventDto {
         this.start = start;
     }
 
-    public String getAddress() {
-        return address;
+
+    public List<Long> getSpeakerIds() {
+        return speakerIds;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setSpeakerIds(List<Long> speakerIds) {
+        this.speakerIds = speakerIds;
     }
 
     public String getSubject() {
@@ -50,11 +58,27 @@ public class EventDto {
         this.subject = subject;
     }
 
-    public String getSpeaker() {
-        return speaker;
+    public String getDescription() {
+        return description;
     }
 
-    public void setSpeaker(String speaker) {
-        this.speaker = speaker;
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public Set<AttendeeDto> getAttendees() {
+        return attendees;
+    }
+
+    public void setAttendees(Set<AttendeeDto> attendees) {
+        this.attendees = attendees;
     }
 }

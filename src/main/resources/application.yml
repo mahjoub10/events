@@ -10,16 +10,16 @@ server:
 
 spring:
     datasource:
-        driver-class-name: org.mariadb.jdbc.Driver
-        url: jdbc:mariadb://localhost:3309/events
+        driver-class-name: com.mysql.jdbc.Driver
+        url: jdbc:mysql://localhost:3306/events
         name:
         username: root
         password: root
         test-while-idle: true
         validationQuery: SELECT 1
     jpa:
-        database-platform: org.hibernate.dialect.MariaDBDialect
-        database: MYSQL
+#        database-platform: org.hibernate.dialect.MariaDB53Dialect
+#        database: MARIADB
         show_sql: false
         properties:
             hibernate.cache.use_second_level_cache: false
@@ -42,7 +42,8 @@ flyway:
 
 
 
-core:
+
+event:
   swagger:
     title: Code once  talents application
     description: Code once Talents Core
@@ -53,3 +54,16 @@ core:
     contactEmail:
     license:
     licenseUrl:
+  oauth2:
+    client_id: mMKBdsIgpC9prxBwgd6V
+    client_secret: QzNmrG57pQpt5B9azA01
+    grant_type: password #authorization_code,refresh_token,password,implicit
+    scope: read # read,write
+    token_validity: 3600
+    refresh_token_validity: 3600
+    jwt_key: I8opCRdidwqvG6F7xqGQ
+    url : http://localhost:9080
+  mail:
+    from : mmarzougui@event.fr
+    adminEmail: admin@gmail.com
+

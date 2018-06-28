@@ -1,5 +1,6 @@
 package com.events.events.models;
 
+import org.hibernate.annotations.DiscriminatorOptions;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,6 +15,8 @@ import java.util.Collections;
  * */
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
+@DiscriminatorValue("user")
+@DiscriminatorOptions(force = false)
 public class User implements UserDetails {
 
     @Id
@@ -27,7 +30,12 @@ public class User implements UserDetails {
     private String password ;
 
     @NotNull
+    @Enumerated(EnumType.STRING)
     private Authority authority ;
+
+    private boolean activated ;
+
+    private boolean deleted;
 
     public long getId() {
         return id;
@@ -55,6 +63,22 @@ public class User implements UserDetails {
 
     public void setAuthority(Authority authority) {
         this.authority = authority;
+    }
+
+    public boolean isActivated() {
+        return activated;
+    }
+
+    public void setActivated(boolean activated) {
+        this.activated = activated;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 
     @Override

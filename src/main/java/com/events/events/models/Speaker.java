@@ -19,11 +19,8 @@ public class Speaker extends  User {
 
     private String lastName ;
 
+    private String mobile ;
 
-
-    private boolean activated ;
-
-    private boolean deleted ;
 
     @ManyToMany(mappedBy = "speakers")
     private Set<Event> events = new HashSet<>();
@@ -52,28 +49,19 @@ public class Speaker extends  User {
         this.lastName = lastName;
     }
 
-
-    public boolean isActivated() {
-        return activated;
-    }
-
-    public void setActivated(boolean activated) {
-        this.activated = activated;
-    }
-
-    public boolean isDeleted() {
-        return deleted;
-    }
-
-    public void setDeleted(boolean deleted) {
-        this.deleted = deleted;
-    }
-
     public Set<Event> getEvents() {
         return events;
     }
 
     public void setEvents(Set<Event> events) {
         this.events = events;
+    }
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
     }
 }

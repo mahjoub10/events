@@ -19,9 +19,9 @@ public class Event {
 
     private Date start;
 
-    private String address;
-
     private String subject ;
+
+    private String description;
 
 
     @ManyToMany()
@@ -60,14 +60,6 @@ public class Event {
         this.start = start;
     }
 
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
     public String getSubject() {
         return subject;
     }
@@ -90,5 +82,13 @@ public class Event {
 
     public void setSpeakers(Set<Speaker> speakers) {
         this.speakers = speakers;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

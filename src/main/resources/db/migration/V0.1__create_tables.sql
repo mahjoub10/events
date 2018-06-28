@@ -7,6 +7,9 @@ CREATE TABLE user (
   id INT NOT NULL AUTO_INCREMENT,
   email varchar(255)  DEFAULT NULL,
   password varchar(255)  DEFAULT NULL,
+  authority varchar(255)  DEFAULT NULL,
+  activated  BOOLEAN NOT NULL DEFAULT 1,
+  deleted   BOOLEAN NOT NULL DEFAULT 0,
   PRIMARY KEY (id)
 ) ;
 
@@ -16,8 +19,8 @@ CREATE TABLE event (
   id INT NOT NULL AUTO_INCREMENT,
   name varchar(255)  DEFAULT NULL,
   subject varchar(255)  DEFAULT NULL,
-  address varchar(255)  DEFAULT NULL,
   start DATE  DEFAULT NULL,
+  description  varchar(1000)  DEFAULT NULL,
   PRIMARY KEY (id)
 ) ;
 
@@ -28,10 +31,6 @@ CREATE TABLE attendee (
   id INT NOT NULL AUTO_INCREMENT,
   first_name varchar(255)  DEFAULT NULL,
   last_name varchar(255)  DEFAULT NULL,
-  email varchar(255)  DEFAULT NULL,
-  password varchar(255)  DEFAULT NULL,
-  activated  BOOLEAN NOT NULL DEFAULT 1,
-  deleted   BOOLEAN NOT NULL DEFAULT 0,
   PRIMARY KEY (id)
 ) ;
 
@@ -42,10 +41,7 @@ CREATE TABLE speaker (
   id INT NOT NULL AUTO_INCREMENT,
   first_name varchar(255)  DEFAULT NULL,
   last_name varchar(255)  DEFAULT NULL,
-  email varchar(255)  DEFAULT NULL,
-  password varchar(255)  DEFAULT NULL,
-  activated  BOOLEAN NOT NULL DEFAULT 1,
-  deleted   BOOLEAN NOT NULL DEFAULT 0,
+  mobile varchar(255)  DEFAULT NULL,
   PRIMARY KEY (id)
 ) ;
 

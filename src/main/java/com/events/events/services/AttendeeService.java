@@ -1,13 +1,18 @@
 package com.events.events.services;
 
 import com.events.events.mapper.AttendeeMapper;
+import com.events.events.mapper.EventMapper;
 import com.events.events.models.Attendee;
+import com.events.events.models.Authority;
 import com.events.events.models.Event;
+import com.events.events.models.User;
 import com.events.events.repositories.AttendeeRepository;
 import com.events.events.web.dto.AttendeeDto;
+import com.events.events.web.dto.EventDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
@@ -27,21 +32,40 @@ public class AttendeeService {
     @Autowired
     private EventService eventService;
 
+    @Autowired
+    private PasswordEncoder endcoder;
+
+    @Autowired
+    private UserService userService ;
+
+    @Autowired
+    private EventMapper eventMapper ;
+
     /**
      * Create new attendee, called for subscription.
      *
      * @param dto
      * @return
      */
-    public void createNewAttendee(AttendeeDto dto) {
+    public AttendeeDto createNewAttendee(AttendeeDto dto) {
 
         logger.info("Creation new attendee");
 
-        Objects.requireNonNull(dto);
+
         Attendee attendee = mapper.fromAttendeeDtoToAttendee(dto);
+
+         String encodedPassword = this.endcoder.encode(dto.getPassword());
+         attendee.setPassword(encodedPassword);
+
+         // THE ATTENDEE IS ACTIVATED BY DEFAULT
+         attendee.setActivated(true);
+
+         attendee.setAuthority(Authority.ROLE_ATTENDEE);
 
         // SAVE TO DATABASE
         attendeeRepository.save(attendee);
+
+        return  this.mapper.fromAttendeeToAttendeeDto(attendee);
 
     }
 
@@ -84,14 +108,15 @@ public class AttendeeService {
     /**
      * Add attendee  to event's attendees.
      *
-     * @param idAttendee
      * @param idEvent
      */
-    public void subscribeToEvents(long idAttendee, long idEvent) {
+    public EventDto subscribeToEvents(long idEvent) {
 
-        logger.info("Subscribe the attendee : {} to the event : {}", idAttendee, idEvent);
+        logger.info("Subscribe the attendee to the event : {}",  idEvent);
 
-        Attendee attendee = this.getAttendeeById(idAttendee);
+        User currentUser = userService.getCurrentUser();
+
+        Attendee attendee = this.getAttendeeById(currentUser.getId());
 
         Event event = this.eventService.getEventById(idEvent);
 
@@ -101,24 +126,31 @@ public class AttendeeService {
         // SAVE CHANGES
         this.eventService.saveEvent(event);
 
+        return  eventMapper.eventToEventDto(event);
+
     }
 
     /**
      * Remove the attendee from event's attendees.
      *
-     * @param idAttendee
      * @param idEvent
      */
-    public void unsubscribeFromEvent(long idAttendee, long idEvent) {
+    public EventDto  unsubscribeFromEvent(long idEvent) {
 
-        logger.info("unsubscribe the attendee : {} from the event : {} ", idAttendee, idEvent);
+        logger.info("unsubscribe the attendee :  from the event : {} ",  idEvent);
+
+        User currentUser = userService.getCurrentUser();
+
         Event event = this.eventService.getEventById(idEvent);
 
         // REMOVE THE ATTENDEE IF FOUND
-        event.getAttendees().removeIf(a -> a.getId() == idAttendee);
+        event.getAttendees().removeIf(a -> a.getId() == currentUser.getId());
 
         // SAVE CHANGE
         this.eventService.saveEvent(event);
+
+        return  eventMapper.eventToEventDto(event);
+
 
     }
 

@@ -3,6 +3,8 @@ package com.events.events.mapper;
 import com.events.events.models.Speaker;
 import com.events.events.web.dto.SpeakerDto;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.Mappings;
 
 /**
  * Custom Dto mapper for speakers.
@@ -25,5 +27,8 @@ public interface SpeakerMapper {
      * @param speaker
      * @return
      */
-    SpeakerDto fromSpeakerDtoToSpeaker(Speaker speaker);
+    @Mappings(
+            {@Mapping(target = "roles", expression = "java(speaker.getAuthorities().stream().map(org.springframework.security.core.GrantedAuthority::getAuthority).collect(java.util.stream.Collectors.toList()))"),
+                    @Mapping(target = "password", ignore = true)})
+    SpeakerDto fromSpeakerToSpeakerDto(Speaker speaker);
 }

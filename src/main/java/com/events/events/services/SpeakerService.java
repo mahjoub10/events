@@ -1,6 +1,7 @@
 package com.events.events.services;
 
 import com.events.events.mapper.SpeakerMapper;
+import com.events.events.models.Authority;
 import com.events.events.models.Event;
 import com.events.events.models.Speaker;
 import com.events.events.repositories.SpeakerRepository;
@@ -8,7 +9,11 @@ import com.events.events.web.dto.SpeakerDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Speaker service.
@@ -22,23 +27,37 @@ public class SpeakerService {
     private SpeakerRepository speakerRepository;
 
     @Autowired
-    private SpeakerMapper mapper ;
+    private SpeakerMapper mapper;
 
     @Autowired
-    private EventService eventService ;
+    private EventService eventService;
+
+    @Autowired
+    private PasswordEncoder endcoder;
 
     /**
      * Create new speaker.
      *
      * @param dto
      */
-    public  void createSpeaker(SpeakerDto dto) {
+    public SpeakerDto createSpeaker(SpeakerDto dto) {
 
         logger.info("Creating new speaker ");
         Speaker speaker = mapper.fromSpeakerDtoToSpeaker(dto);
 
-        //SAVE TO DATA BASE
-        this.speakerRepository.save(speaker);
+        String encodedPassword = this.endcoder.encode(dto.getPassword());
+        speaker.setPassword(encodedPassword);
+
+        // THE SPeaker IS ACTIVATED BY DEFAULT
+        speaker.setActivated(true);
+
+        speaker.setAuthority(Authority.ROLE_SPEAKER);
+
+        // SAVE TO DATABASE
+        speakerRepository.save(speaker);
+
+        return this.mapper.fromSpeakerToSpeakerDto(speaker);
+
 
     }
 
@@ -47,9 +66,9 @@ public class SpeakerService {
      *
      * @param id
      */
-    public  void deactivateSpeaker(long id) {
+    public void deactivateSpeaker(long id) {
 
-        logger.info("Deactivating the speaker : {} ",id);
+        logger.info("Deactivating the speaker : {} ", id);
         Speaker speaker = this.getSpeakerById(id);
 
         // SET ACTIVATE TO FALSE
@@ -97,9 +116,18 @@ public class SpeakerService {
     }
 
 
+    public List<SpeakerDto> getSpeakers() {
+
+        return speakerRepository
+                .findAll()
+                .stream()
+                .map(mapper::fromSpeakerToSpeakerDto)
+                .collect(Collectors.toList());
+    }
+
     public void removeFromEvent(long idSpeaker, long idEvent) {
 
-        logger.info("Removing the speaker : {} from event : {} ",idSpeaker, idEvent);
+        logger.info("Removing the speaker : {} from event : {} ", idSpeaker, idEvent);
 
         Event event = this.eventService.getEventById(idEvent);
 
