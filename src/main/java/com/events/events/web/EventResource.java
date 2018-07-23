@@ -56,4 +56,19 @@ public class EventResource {
         EventDto result = eventService.findEventById(eventId) ;
         return  ResponseEntity.ok(result);
     }
+
+    /**
+     * Get  the list of all available events for a given speaker.
+     *
+     * @return
+     */
+    @GetMapping("/speaker/all")
+    public ResponseEntity<List<EventDto>> getEventBySpeaker(@RequestParam("speakerId") long speakerId) {
+
+        logger.info("Request to get all event");
+        List<EventDto> result = this.eventService.getEventBySpeaker(speakerId);
+        return  ResponseEntity.ok(result);
+
+    }
+
 }

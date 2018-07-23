@@ -36,6 +36,12 @@ public class Event {
             inverseJoinColumns = {@JoinColumn(name = "speaker_id", referencedColumnName = "id")})
     private Set<Speaker> speakers = new HashSet<>();
 
+    @ManyToMany()
+    @JoinTable(name = "events_requests",
+            joinColumns = {@JoinColumn(name = "event_id", referencedColumnName = "id")},
+            inverseJoinColumns = {@JoinColumn(name = "request_id", referencedColumnName = "id")})
+    private Set<Request> requests = new HashSet<>();
+
     public Long getId() {
         return id;
     }
@@ -90,5 +96,13 @@ public class Event {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Set<Request> getRequests() {
+        return requests;
+    }
+
+    public void setRequests(Set<Request> requests) {
+        this.requests = requests;
     }
 }

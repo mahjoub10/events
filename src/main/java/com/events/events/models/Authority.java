@@ -15,5 +15,10 @@ public enum Authority {
     /**
      * ATTENDEE
      */
-    ROLE_ATTENDEE;
+    ROLE_ATTENDEE,
+
+    /**
+     * ORGANIZER
+     */
+    ROLE_ORGANIZER ;
 }

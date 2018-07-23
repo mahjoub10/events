@@ -43,9 +43,9 @@ public class EventService {
         logger.info("Save new event");
         Event eventToSave = eventMapper.eventDtoToEvent(event);
         Set<Speaker> speakers = event
-                .getSpeakerIds()
+                .getSpeakers()
                 .stream()
-                .map(id -> speakerRepository.findOneById(id))
+                .map(sp -> speakerRepository.findOneById(sp.getId()))
                 .map(Optional::get)
                 .collect(Collectors.toSet());
 
@@ -65,6 +65,19 @@ public class EventService {
     public List<EventDto> getAllEvent() {
 
         return eventRepository.findEventByDate()
+                .stream()/**/
+                .map(eventMapper::eventToEventDto)
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Get event list
+     *
+     * @return
+     */
+    public List<EventDto> getEventBySpeaker(long speakerId) {
+
+        return eventRepository.findEventBySpeakersIdIn(speakerId)
                 .stream()/**/
                 .map(eventMapper::eventToEventDto)
                 .collect(Collectors.toList());

@@ -18,7 +18,7 @@ public class EventDto {
 
     private String subject;
 
-    private List<Long> speakerIds;
+    private List<SpeakerDto> speakers;
 
     private String description;
 
@@ -39,15 +39,6 @@ public class EventDto {
 
     public void setStart(Date start) {
         this.start = start;
-    }
-
-
-    public List<Long> getSpeakerIds() {
-        return speakerIds;
-    }
-
-    public void setSpeakerIds(List<Long> speakerIds) {
-        this.speakerIds = speakerIds;
     }
 
     public String getSubject() {
@@ -80,5 +71,13 @@ public class EventDto {
 
     public void setAttendees(Set<AttendeeDto> attendees) {
         this.attendees = attendees;
+    }
+
+    public List<SpeakerDto> getSpeakers() {
+        return speakers;
+    }
+
+    public void setSpeakers(List<SpeakerDto> speakers) {
+        this.speakers = speakers;
     }
 }
