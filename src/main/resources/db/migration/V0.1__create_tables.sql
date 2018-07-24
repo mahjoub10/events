@@ -21,6 +21,7 @@ CREATE TABLE event (
   subject varchar(255)  DEFAULT NULL,
   start DATE  DEFAULT NULL,
   description  varchar(1000)  DEFAULT NULL,
+  organizer_id INT DEFAULT NULL,
   PRIMARY KEY (id)
 ) ;
 

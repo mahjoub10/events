@@ -36,11 +36,12 @@ public class Event {
             inverseJoinColumns = {@JoinColumn(name = "speaker_id", referencedColumnName = "id")})
     private Set<Speaker> speakers = new HashSet<>();
 
-    @ManyToMany()
-    @JoinTable(name = "events_requests",
-            joinColumns = {@JoinColumn(name = "event_id", referencedColumnName = "id")},
-            inverseJoinColumns = {@JoinColumn(name = "request_id", referencedColumnName = "id")})
+    @OneToMany(mappedBy = "event")
     private Set<Request> requests = new HashSet<>();
+
+    @OneToOne
+    @JoinColumn(name = "organizer_id")
+    private Organizer organizer ;
 
     public Long getId() {
         return id;

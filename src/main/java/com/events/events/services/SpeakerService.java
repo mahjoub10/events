@@ -48,7 +48,7 @@ public class SpeakerService {
         String encodedPassword = this.endcoder.encode(dto.getPassword());
         speaker.setPassword(encodedPassword);
 
-        // THE SPeaker IS ACTIVATED BY DEFAULT
+        // THE SPEAKER IS ACTIVATED BY DEFAULT
         speaker.setActivated(true);
 
         speaker.setAuthority(Authority.ROLE_SPEAKER);

@@ -25,6 +25,11 @@ public class Request {
     @JoinColumn(name = "speaker_id")
     private Speaker speaker ;
 
+    @ManyToOne(cascade={CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH })
+    @JoinColumn(name = "event_id")
+    private Event event ;
+
+
     public long getId() {
         return id;
     }
@@ -72,5 +77,13 @@ public class Request {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Event getEvent() {
+        return event;
+    }
+
+    public void setEvent(Event event) {
+        this.event = event;
     }
 }

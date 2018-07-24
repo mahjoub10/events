@@ -10,12 +10,3 @@ CREATE TABLE request (
   PRIMARY KEY (id)
 ) ;
 
-
-
--- create event speaker table
-
-CREATE TABLE `events_requests` (
-  `event_id` bigint(20) NOT NULL,
-  `request_id` bigint(20) NOT NULL,
-  PRIMARY KEY (`event_id`,`request_id`)
-) ;
