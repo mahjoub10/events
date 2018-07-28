@@ -8,7 +8,6 @@ import com.events.events.models.Speaker;
 import com.events.events.repositories.EventRepository;
 import com.events.events.repositories.RequestRepository;
 import com.events.events.repositories.SpeakerRepository;
-import com.events.events.web.dto.EventDto;
 import com.events.events.web.dto.RequestDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,12 +36,15 @@ public class RequestService {
     private SpeakerRepository speakerRepository;
 
     @Autowired
-    private RequestMapper requestMapper ;
+    private RequestMapper requestMapper;
+
+    @Autowired
+    private UserService userService ;
 
 
     public RequestDto addRequest(RequestDto dto) {
 
-        long eventId = dto.getEventId();
+        long eventId = dto.getEvent().getId();
 
         long speakerId = dto.getSpeakerId();
 
@@ -56,21 +58,18 @@ public class RequestService {
         Speaker speaker = speakerRepository.findOneById(speakerId)
                 .orElseThrow(() -> new IllegalStateException("No speaker has been found"));
 
-        checkRequestSent(speakerId, event);
+        checkRequestSent(speakerId, eventId);
 
         Request request = new Request();
         request.setDate(new Date());
         request.setStatus(RequestStatus.WAITING);
         request.setDescription(dto.getDescription());
         request.setSpeaker(speaker);
+        request.setEvent(event);
 
         Request savedRequest = requestRepository.saveAndFlush(request);
 
-        event.getRequests().add(savedRequest);
-
-        eventRepository.save(event);
-
-        return dto;
+        return requestMapper.requestToRequestDto(savedRequest);
 
     }
 
@@ -88,7 +87,8 @@ public class RequestService {
 
     public List<RequestDto> findALlRequest() {
 
-        List<Request> requests = this.requestRepository.findByStatus(RequestStatus.WAITING);
+        long organizerId = userService.getCurrentUser().getId();
+        List<Request> requests = this.requestRepository.findByStatusAndOrganizer(RequestStatus.WAITING, organizerId);
 
         return requests
                 .stream()
@@ -96,14 +96,14 @@ public class RequestService {
                 .collect(Collectors.toList());
     }
 
-    private void checkRequestSent(long speakerId, Event event) {
+    private void checkRequestSent(long speakerId, long eventId) {
 
-        boolean requestAlwaysSent = event.getRequests()
-                .stream()
-                .anyMatch(r -> r.getSpeaker().getId() == speakerId);
+        boolean requestAlwaysSent = !requestRepository
+                .findByEventAndSpeaker(eventId, speakerId)
+                .isEmpty();
 
         if (requestAlwaysSent) {
-            throw new IllegalArgumentException("La demande est déja envoyé");
+            throw new IllegalArgumentException("La demande est déja envoyée");
         }
     }
 }

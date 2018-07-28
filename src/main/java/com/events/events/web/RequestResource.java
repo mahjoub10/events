@@ -42,7 +42,7 @@ public class RequestResource {
 
     }
 
-    @GetMapping("/get")
+    @GetMapping("/all")
     public ResponseEntity<List<RequestDto>> getRequestList(){
         logger.info("WS call to get request list");
 

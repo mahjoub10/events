@@ -106,4 +106,12 @@ public class Event {
     public void setRequests(Set<Request> requests) {
         this.requests = requests;
     }
+
+    public Organizer getOrganizer() {
+        return organizer;
+    }
+
+    public void setOrganizer(Organizer organizer) {
+        this.organizer = organizer;
+    }
 }
