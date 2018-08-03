@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,6 +29,7 @@ public class EventResource {
      * @param event
      */
     @PostMapping("/create")
+    @Secured("ROLE_ORGANIZER")
     public  ResponseEntity<EventDto> createEvent(@RequestBody EventDto event) {
         logger.info("Request to save new Event : {}",event);
         EventDto result = this.eventService.createEvent(event);

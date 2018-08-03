@@ -44,7 +44,7 @@ public class RequestService {
 
     public RequestDto addRequest(RequestDto dto) {
 
-        long eventId = dto.getEvent().getId();
+        long eventId = dto.getEventId();
 
         long speakerId = dto.getSpeakerId();
 

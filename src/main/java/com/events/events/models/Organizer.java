@@ -1,6 +1,7 @@
 package com.events.events.models;
 
 import javax.persistence.*;
+import java.util.List;
 
 /**
  * Organizer entity.
@@ -19,8 +20,8 @@ public class Organizer extends User {
 
     private String mobile ;
 
-    @OneToOne(mappedBy = "organizer")
-    private Event event ;
+    @OneToMany(mappedBy = "organizer")
+    private List<Event> event ;
 
     @Override
     public long getId() {
@@ -56,11 +57,11 @@ public class Organizer extends User {
         this.mobile = mobile;
     }
 
-    public Event getEvent() {
+    public List<Event> getEvent() {
         return event;
     }
 
-    public void setEvent(Event event) {
+    public void setEvent(List<Event> event) {
         this.event = event;
     }
 }

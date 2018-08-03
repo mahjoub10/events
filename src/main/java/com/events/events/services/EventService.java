@@ -2,7 +2,9 @@ package com.events.events.services;
 
 import com.events.events.mapper.EventMapper;
 import com.events.events.models.Event;
+import com.events.events.models.Organizer;
 import com.events.events.models.Speaker;
+import com.events.events.models.User;
 import com.events.events.repositories.EventRepository;
 import com.events.events.repositories.SpeakerRepository;
 import com.events.events.web.dto.EventDto;
@@ -33,6 +35,9 @@ public class EventService {
     @Autowired
     private SpeakerRepository speakerRepository;
 
+    @Autowired
+    private UserService userService;
+
     /**
      * Create new Event.
      *
@@ -42,17 +47,22 @@ public class EventService {
 
         logger.info("Save new event");
         Event eventToSave = eventMapper.eventDtoToEvent(event);
-        Set<Speaker> speakers = event
-                .getSpeakers()
-                .stream()
-                .map(sp -> speakerRepository.findOneById(sp.getId()))
-                .map(Optional::get)
-                .collect(Collectors.toSet());
 
-        eventToSave.setSpeakers(speakers);
+//        Set<Speaker> speakers = event
+//                .getSpeakers()
+//                .stream()
+//                .map(sp -> speakerRepository.findOneById(sp.getId()))
+//                .map(Optional::get)
+//                .collect(Collectors.toSet());
+//        eventToSave.setSpeakers(speakers);
+
+        User currentUser = userService.getCurrentUser();
+        Organizer organizer = (Organizer) currentUser;
+        eventToSave.setOrganizer(organizer);
+
         Event savedEvent = this.saveEvent(eventToSave);
 
-        return  eventMapper.eventToEventDto(savedEvent);
+        return eventMapper.eventToEventDto(savedEvent);
 
     }
 
@@ -92,7 +102,7 @@ public class EventService {
      */
     public EventDto findEventById(Long id) {
 
-        Event event =  this.getEventById(id);
+        Event event = this.getEventById(id);
         return eventMapper.eventToEventDto(event);
     }
 
@@ -114,7 +124,7 @@ public class EventService {
      */
     public Event saveEvent(Event event) {
 
-       return this.eventRepository.save(event);
+        return this.eventRepository.save(event);
     }
 
 

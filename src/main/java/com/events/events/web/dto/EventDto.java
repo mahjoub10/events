@@ -24,6 +24,10 @@ public class EventDto {
 
     private Set<AttendeeDto> attendees = new HashSet<>();
 
+    private OrganizerDto organizer ;
+
+    private Set<RequestDto> requests = new HashSet<>();
+
 
     public String getName() {
         return name;
@@ -79,5 +83,21 @@ public class EventDto {
 
     public void setSpeakers(List<SpeakerDto> speakers) {
         this.speakers = speakers;
+    }
+
+    public OrganizerDto getOrganizer() {
+        return organizer;
+    }
+
+    public void setOrganizer(OrganizerDto organizer) {
+        this.organizer = organizer;
+    }
+
+    public Set<RequestDto> getRequests() {
+        return requests;
+    }
+
+    public void setRequests(Set<RequestDto> requests) {
+        this.requests = requests;
     }
 }

@@ -31,6 +31,8 @@ public class OAuth2AuthorizationServerConfig extends AuthorizationServerConfigur
     public JwtAccessTokenConverter accessTokenConverter() {
         JwtAccessTokenConverter tokenConverter = new JwtAccessTokenConverter();
         tokenConverter.setSigningKey(properties.getOauth2().getJwt_key());
+
+
         return tokenConverter;
     }
 

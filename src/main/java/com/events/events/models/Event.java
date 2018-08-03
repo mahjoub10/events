@@ -39,7 +39,7 @@ public class Event {
     @OneToMany(mappedBy = "event")
     private Set<Request> requests = new HashSet<>();
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "organizer_id")
     private Organizer organizer ;
 

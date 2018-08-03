@@ -6,8 +6,6 @@ public class OrganizerDto extends  UserDto {
 
     private String mobile ;
 
-    private EventDto event ;
-
     public long getId() {
         return id;
     }
@@ -24,11 +22,4 @@ public class OrganizerDto extends  UserDto {
         this.mobile = mobile;
     }
 
-    public EventDto getEvent() {
-        return event;
-    }
-
-    public void setEvent(EventDto event) {
-        this.event = event;
-    }
 }

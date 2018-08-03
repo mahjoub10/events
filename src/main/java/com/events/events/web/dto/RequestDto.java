@@ -7,9 +7,9 @@ import java.util.Date;
 
 public class RequestDto {
 
-    private EventDto event;
-
     private long speakerId;
+
+    private long eventId ;
 
     private RequestType type ;
 
@@ -18,14 +18,6 @@ public class RequestDto {
     private Date date ;
 
     private String description ;
-
-    public EventDto getEvent() {
-        return event;
-    }
-
-    public void setEvent(EventDto event) {
-        this.event = event;
-    }
 
     public long getSpeakerId() {
         return speakerId;
@@ -65,5 +57,13 @@ public class RequestDto {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public long getEventId() {
+        return eventId;
+    }
+
+    public void setEventId(long eventId) {
+        this.eventId = eventId;
     }
 }
