@@ -13,8 +13,10 @@ public class Request {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @Enumerated(EnumType.STRING)
     private RequestType type;
 
+    @Enumerated(EnumType.STRING)
     private RequestStatus status ;
 
     private Date date ;

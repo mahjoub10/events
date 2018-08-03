@@ -7,7 +7,13 @@ import java.util.Date;
 
 public class RequestDto {
 
+    private long id;
+
     private long speakerId;
+
+    private String speakerFullName ;
+
+    private String eventSubject ;
 
     private long eventId ;
 
@@ -65,5 +71,29 @@ public class RequestDto {
 
     public void setEventId(long eventId) {
         this.eventId = eventId;
+    }
+
+    public String getSpeakerFullName() {
+        return speakerFullName;
+    }
+
+    public void setSpeakerFullName(String speakerFullName) {
+        this.speakerFullName = speakerFullName;
+    }
+
+    public String getEventSubject() {
+        return eventSubject;
+    }
+
+    public void setEventSubject(String eventSubject) {
+        this.eventSubject = eventSubject;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 }

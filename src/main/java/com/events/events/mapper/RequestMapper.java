@@ -18,8 +18,11 @@ public interface RequestMapper {
      * @param request
      * @return
      */
-    @Mappings
-            ({@Mapping(target = "eventId", source = "request.event.id"),
-                    @Mapping(target = "speakerId", source = "request.speaker.id")})
+    @Mappings({
+            @Mapping(target = "eventId", source = "request.event.id"),
+            @Mapping(target = "speakerId", source = "request.speaker.id"),
+            @Mapping(target = "speakerFullName", expression = "java(request.getSpeaker().getFirstName()+' '+request.getSpeaker().getLastName())"),
+            @Mapping(target = "eventSubject", source = "request.event.subject")
+    })
     RequestDto requestToRequestDto(Request request);
 }

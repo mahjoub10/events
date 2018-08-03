@@ -65,6 +65,7 @@ public class RequestService {
         request.setStatus(RequestStatus.WAITING);
         request.setDescription(dto.getDescription());
         request.setSpeaker(speaker);
+        request.setType(dto.getType());
         request.setEvent(event);
 
         Request savedRequest = requestRepository.saveAndFlush(request);
