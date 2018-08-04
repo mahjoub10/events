@@ -81,6 +81,15 @@ public class RequestService {
                 .orElseThrow(() -> new IllegalStateException("No request has been found"));
 
         request.setStatus(status);
+
+        if(status == RequestStatus.ACCEPTED){
+
+            Speaker speaker = request.getSpeaker();
+            Event event = request.getEvent();
+            event.getSpeakers().add(speaker);
+            requestRepository.save(request);
+        }
+
         requestRepository.save(request);
 
         return true;
